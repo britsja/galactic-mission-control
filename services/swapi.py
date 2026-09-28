@@ -1,4 +1,5 @@
 import requests
+from models.character import Character
 
 BASE_URL: str = "https://swapi.info/api"
 
@@ -9,4 +10,8 @@ def get_character(character_id: int) -> dict:
 
   response.raise_for_status()
 
-  return response.json()
+  data: dict = response.json()
+
+  character = Character(**data)
+
+  return character

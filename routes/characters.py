@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify
 import requests
+from pydantic import ValidationError
 from services.swapi import get_character
+
 
 characters_bp = Blueprint("characters", __name__)
 
@@ -16,4 +18,7 @@ def character_by_id(character_id: int):
   except requests.exceptions.RequestException:
     return jsonify({"error": "Unable to connect to SWAPI"}), 503
 
-  return jsonify(character), 200
+  except ValidationError:
+    return jsonify({"error": "Invalid character data received from Swapi"}), 502
+
+  return jsonify(character.model_dump()), 200
