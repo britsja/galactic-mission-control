@@ -1,8 +1,10 @@
 import requests
 from models.character import Character
+from utils.decorators import log_execution_time
 
 BASE_URL: str = "https://swapi.info/api"
 
+@log_execution_time
 def get_character(character_id: int) -> Character:
   url: str = f"{BASE_URL}/people/{character_id}"
   response = requests.get(url, timeout=5)
