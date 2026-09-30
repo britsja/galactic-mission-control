@@ -1,6 +1,7 @@
 import requests
 from models.character import Character
 from utils.decorators import log_execution_time
+from collections.abc import Generator
 
 BASE_URL: str = "https://swapi.info/api"
 
@@ -54,3 +55,14 @@ def create_character_summary(
   }
 
   return summary
+
+def generate_crew(character_ids: list[int]) -> Generator[dict, None, None]:
+  for character_id in character_ids:
+    character = get_character(character_id)
+
+    summary = create_character_summary(
+      character,
+      character_id,
+    )
+
+    yield summary

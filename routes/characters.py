@@ -1,10 +1,22 @@
 from flask import Blueprint, jsonify
 import requests
 from pydantic import ValidationError
-from services.swapi import get_character, create_character_summary
+from services.swapi import get_character, create_character_summary, generate_crew
 
 
 characters_bp = Blueprint("characters", __name__)
+
+@characters_bp.route("/crew", methods=["GET"])
+def get_crew():
+  crew_ids: list[int] = [1, 5, 10, 13]
+
+  crew_generator = generate_crew(crew_ids)
+  crew: list[dict] = list(crew_generator)
+
+  return jsonify({
+    "crew": crew,
+    "crew_size": len(crew),
+  }), 200
 
 @characters_bp.route("/<int:character_id>", methods=["GET"])
 def character_by_id(character_id: int):
