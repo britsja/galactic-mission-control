@@ -1,10 +1,26 @@
 from flask import Blueprint, jsonify
 import requests
 from pydantic import ValidationError
-from services.swapi import get_character, create_character_summary, generate_crew
+from services.swapi import get_character, create_character_summary, generate_crew, create_async_crew
+import asyncio
+from utils.decorators import log_execution_time
 
 
 characters_bp = Blueprint("characters", __name__)
+
+@characters_bp.route("/async-crew", methods=["GET"])
+@log_execution_time
+def get_async_crew():
+  crew_ids: list[int] = [1, 5, 10, 13]
+
+  crew = asyncio.run(
+    create_async_crew(crew_ids)
+  )
+
+  return jsonify({
+    "crew": crew,
+    "crew_size": len(crew),
+  }), 200
 
 @characters_bp.route("/crew", methods=["GET"])
 def get_crew():

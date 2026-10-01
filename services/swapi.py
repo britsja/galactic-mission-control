@@ -2,6 +2,8 @@ import requests
 from models.character import Character
 from utils.decorators import log_execution_time
 from collections.abc import Generator
+import asyncio
+import httpx
 
 BASE_URL: str = "https://swapi.info/api"
 
@@ -66,3 +68,44 @@ def generate_crew(character_ids: list[int]) -> Generator[dict, None, None]:
     )
 
     yield summary
+
+async def get_character_async(
+    client: httpx.AsyncClient,
+    character_id: int,
+) -> Character:
+    url: str = f"{BASE_URL}/people/{character_id}"
+
+    response = await client.get(url)
+    response.raise_for_status()
+    data: dict = response.json()
+
+    return Character(**data)
+
+async def get_crew_async(
+    character_ids: list[int],
+) -> list[Character]:
+
+    async with httpx.AsyncClient(timeout=5.0) as client:
+       tasks = [
+          get_character_async(client, character_id)
+          for character_id in character_ids
+       ]
+
+       characters = await asyncio.gather(*tasks)
+
+    return characters
+
+async def create_async_crew(
+      character_ids: list[int],
+) -> list[dict]:
+   characters = await get_crew_async(character_ids)
+
+   crew: list[dict] = [
+      create_character_summary(character, character_id)
+      for character, character_id in zip(
+         characters,
+         character_ids,
+      )
+   ]
+
+   return crew
