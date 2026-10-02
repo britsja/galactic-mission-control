@@ -82,18 +82,19 @@ async def get_character_async(
     return Character(**data)
 
 async def get_crew_async(
+    client: httpx.AsyncClient,
     character_ids: list[int],
 ) -> list[Character]:
 
-    async with httpx.AsyncClient(timeout=5.0) as client:
-       tasks = [
-          get_character_async(client, character_id)
-          for character_id in character_ids
-       ]
+   
+      tasks = [
+        get_character_async(client, character_id)
+        for character_id in character_ids
+      ]
 
-       characters = await asyncio.gather(*tasks)
+      characters = await asyncio.gather(*tasks)
 
-    return characters
+      return characters
 
 async def create_async_crew(
       character_ids: list[int],
@@ -109,3 +110,14 @@ async def create_async_crew(
    ]
 
    return crew
+
+async def get_planet_async(
+      client: httpx.AsyncClient,
+      planet_id: int,
+) -> dict:
+   url: str = f"{BASE_URL}/planets/{planet_id}"
+
+   response = await client.get(url)
+   response.raise_for_status()
+
+   return response.json()
