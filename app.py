@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from routes.characters import characters_bp
 from routes.missions import missions_bp
 
@@ -14,10 +14,7 @@ app.register_blueprint(
 
 @app.route("/")
 def home() -> str:
-  return """
-    <h1>Galactic Mission Control</h1>
-    <p>System Status: Online</p>
-  """
+  return render_template("index.html")
 
 if __name__ == "__main__":
   app.run(debug=True)

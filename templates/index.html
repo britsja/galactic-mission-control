@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galactic Mission Control</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+  <header class="header">
+      <p class="eyebrow">REBEL COMMAND NETWORK</p>
+      <h1>Galactic Mission Control</h1>
+      <p class="subtitle">
+          SWAPI intelligence and mission planning system
+      </p>
+      <div class="status">
+          <span class="status-light"></span>
+          API ONLINE
+      </div>
+  </header>
+  <main class="dashboard">
+      <section class="panel">
+          <div class="panel-heading">
+              <div>
+                  <p class="panel-label">GALACTIC DATABASE</p>
+                  <h2>Character Intelligence</h2>
+              </div>
+          </div>
+          <div class="search-controls">
+              <input
+                  id="character-id"
+                  type="number"
+                  min="1"
+                  value="1"
+                  placeholder="Character ID"
+              >
+              <button id="character-search">
+                  Retrieve Character
+              </button>
+              <button
+                  id="random-character"
+                  class="secondary-button"
+              >
+                  Random Character
+              </button>
+          </div>
+          <div
+              id="character-result"
+              class="result-container"
+          >
+              <p class="placeholder">
+                  Select a character to retrieve intelligence.
+              </p>
+          </div>
+      </section>
+      <section class="panel">
+          <div class="panel-heading">
+              <div>
+                  <p class="panel-label">OPERATIONS</p>
+                  <h2>Create Mission</h2>
+              </div>
+          </div>
+          <form id="mission-form">
+              <label for="mission-name">
+                  Mission Name
+              </label>
+              <input
+                  id="mission-name"
+                  type="text"
+                  placeholder="Operation Twin Suns"
+                  required
+              >
+              <label for="character-ids">
+                  Crew IDs
+              </label>
+              <input
+                  id="character-ids"
+                  type="text"
+                  placeholder="1, 5, 13"
+                  required
+              >
+              <p class="input-help">
+                  Enter SWAPI character IDs separated by commas.
+              </p>
+              <label for="planet-id">
+                  Destination Planet ID
+              </label>
+              <input
+                  id="planet-id"
+                  type="number"
+                  min="1"
+                  value="1"
+                  required
+              >
+              <button type="submit">
+                  Assemble Mission
+              </button>
+          </form>
+          <div
+              id="mission-result"
+              class="result-container"
+          >
+              <p class="placeholder">
+                  Mission data will appear here.
+              </p>
+          </div>
+      </section>
+  </main>
+
+  <footer>
+      Galactic Mission Control · Powered by Flask + SWAPI
+  </footer>
+
+  <script
+      src="{{ url_for('static', filename='js/app.js') }}"
+  ></script>
+
+</body>
+</html>
