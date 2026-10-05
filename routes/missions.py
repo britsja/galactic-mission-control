@@ -24,7 +24,7 @@ def create_mission():
   except ValidationError as error:
     return jsonify({
       "error": "Invalid mission data",
-      "details": error.errors(),
+      "details": str(error),
     }), 400
 
   except httpx.HTTPStatusError as error:

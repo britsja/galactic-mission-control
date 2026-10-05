@@ -19,7 +19,7 @@ def get_character(character_id: int) -> Character:
 def create_character_summary(
     character: Character,
     character_id: int,
-) -> dict:
+) -> dict[str, object]:
   character_data: dict = character.model_dump()
 
   basic_fields: list[str] = [
@@ -58,7 +58,7 @@ def create_character_summary(
 
   return summary
 
-def generate_crew(character_ids: list[int]) -> Generator[dict, None, None]:
+def generate_crew(character_ids: list[int]) -> Generator[dict[str, object], None, None]:
   for character_id in character_ids:
     character = get_character(character_id)
 
@@ -98,7 +98,7 @@ async def get_crew_async(
 
 async def create_async_crew(
       character_ids: list[int],
-) -> list[dict]:
+) -> list[dict[str, object]]:
    characters = await get_crew_async(character_ids)
 
    crew: list[dict] = [

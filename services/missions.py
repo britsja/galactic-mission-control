@@ -9,7 +9,7 @@ from services.swapi import (
 
 async def build_mission(
     mission: MissionRequest,
-) -> dict:
+) -> dict[str, object]:
   async with httpx.AsyncClient(timeout=5.0) as client:
     crew_task = get_crew_async(
       client,
